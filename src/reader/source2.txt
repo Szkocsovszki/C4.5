@@ -1,0 +1,9 @@
+﻿magasság;hajszín;szemszín;osztály
+alacsony;alma;kék;class
+magas;szőke;barna;class
+magas;vörös;kék;class
+alacsony;áfonya;kék;class
+magas;sötét;kék;class
+magas;barack;kék;class
+magas;sötét;barna;class
+alacsony;szőke;barna;class

@@ -1,0 +1,6 @@
+name: hajszín, ancestor: null, ancestorEdge: null, descendantEdges: [szőke, sötét, vörös], elements: []
+name: +, ancestor: hajszín, ancestorEdge: vörös, descendantEdges: [], elements: [3]
+name: -, ancestor: hajszín, ancestorEdge: sötét, descendantEdges: [], elements: [4, 5, 7]
+name: szemszín, ancestor: hajszín, ancestorEdge: szőke, descendantEdges: [barna, kék], elements: []
+name: +, ancestor: szemszín, ancestorEdge: kék, descendantEdges: [], elements: [1, 6]
+name: -, ancestor: szemszín, ancestorEdge: barna, descendantEdges: [], elements: [2, 8]

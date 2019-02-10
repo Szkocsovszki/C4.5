@@ -1,0 +1,15 @@
+outlook;humidity;windy;class
+sunny;true;true;play
+sunny;false;true;don't play
+sunny;false;false;don't play
+sunny;false;false;don't play
+sunny;true;false;play
+overcast;false;true;play
+overcast;false;false;play
+overcast;true;true;play
+overcast;true;false;play
+rain;false;true;don't play
+rain;true;true;don't play
+rain;false;false;play
+rain;false;false;play
+rain;false;false;play
