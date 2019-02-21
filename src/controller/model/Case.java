@@ -1,6 +1,7 @@
 package controller.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Case {
 	private int index;
@@ -8,7 +9,7 @@ public class Case {
 	private String caseClass = null;
 	
 	public Case(String[] attributeValues) {
-		this.allAttributeValues = new HashMap<>();
+		this.allAttributeValues = new LinkedHashMap<>();
 		
 		index = ++CaseInformation.index;
 		
