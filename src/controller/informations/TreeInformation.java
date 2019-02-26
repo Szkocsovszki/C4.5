@@ -1,4 +1,4 @@
-package controller.model;
+package controller.informations;
 
 public class TreeInformation {
 	private String elementType = "";

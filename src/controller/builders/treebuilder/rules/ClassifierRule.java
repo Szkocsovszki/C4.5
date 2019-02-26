@@ -1,4 +1,4 @@
-package controller.treebuilder.rules;
+package controller.builders.treebuilder.rules;
 
 import java.util.ArrayList;
 

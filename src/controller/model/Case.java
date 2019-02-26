@@ -3,6 +3,8 @@ package controller.model;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import controller.informations.CaseInformation;
+
 public class Case {
 	private int index;
 	private HashMap<String, String> allAttributeValues;

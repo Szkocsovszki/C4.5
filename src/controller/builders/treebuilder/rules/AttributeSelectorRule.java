@@ -1,13 +1,12 @@
-package controller.treebuilder.rules;
+package controller.builders.treebuilder.rules;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
+import controller.converters.CaseConverter;
+import controller.informations.CaseInformation;
 import controller.model.Case;
-import controller.model.CaseInformation;
 import controller.model.ColumnVector;
-import reader.CaseReader;
+import controller.model.VectorOperations;
 
 public class AttributeSelectorRule {
 	private static ArrayList<Case> caseList;
@@ -18,63 +17,6 @@ public class AttributeSelectorRule {
 			possibleValuesForAttribute(CaseInformation.attributeNames.get(i));
 		}
 	}*/
-	
-	private static Set<String> possibleClasses() {
-		Set<String> set = new HashSet<>();
-		
-		set.add(CaseInformation.positiveCase);
-		set.add(CaseInformation.negativeCase);
-		
-		return set;
-	}
-	
-	public static Set<String> possibleValuesForAttribute(String attributeName) {
-		Set<String> set = new HashSet<>();
-		
-		for(int i=0; i<caseList.size(); i++) {
-			set.add(caseList.get(i).getAttributeValue(attributeName));
-		}
-		
-		/*System.out.println(attributeName + ": " + set.size());
-		System.out.println(set.toString());*/
-		
-		return set;
-	}
-	
-	private static void caseExamination(Set<String> possibleValues, String attributeName, ArrayList<ColumnVector> vectorList) {
-		int i;
-		double[] vector = new double[caseList.size()];
-		for(String value : possibleValues) {
-			i = 0;
-			for(Case actualCase : caseList) {
-				if(attributeName.isEmpty()) {
-					vector[i++] = actualCase.getCaseClass().equals(value) ? 1.0 : 0.0;
-				} else {
-					vector[i++] = actualCase.getAttributeValue(attributeName).equals(value) ? 1.0 : 0.0;
-				}
-			}
-			vectorList.add(new ColumnVector(value, vector));
-		}
-	}
-	
-	private static void caseToVector() {
-		// névhez hozzá kéne adni az attribútum nevét is, mert lehet, hogy más attribútumnak is van ilyen lehetséges értéke
-		vectorList = new ArrayList<>();
-		for(String attributeName : CaseInformation.attributeNames) {
-			caseExamination(possibleValuesForAttribute(attributeName), attributeName, vectorList);
-		}
-		
-		caseExamination(possibleClasses(), "", vectorList);
-	}
-	
-	private static double[] scalarMultiplication(double[] v1, double[] v2) {
-		double[] vector = new double[caseList.size()];
-		for(int i=0; i<caseList.size(); i++) {
-			vector[i] = v1[i] * v2[i];
-		}		
-		
-		return vector;
-	}
 	
 	/*private double information(ArrayList<Case> S) {
 		//s - subset of caseList
@@ -134,16 +76,6 @@ public class AttributeSelectorRule {
 		return (xki_plus*xki_minus) / (w_plus*xki_plus + w_minus*xki_minus);
 	}
 	
-	private static ColumnVector getVectorFromVectorListByName(String name, ArrayList<ColumnVector> list) {
-		for(ColumnVector i : list) {
-			if(i.getName().equals(name)) {
-				return i;
-			}
-		}
-		
-		return null;
-	}
-	
 	private static void scalarMultiplicationWithClassVectors(
 			ColumnVector classVectorPositive, ColumnVector classVectorNegative, 
 			ArrayList<ColumnVector> r_plus, ArrayList<ColumnVector> r_minus
@@ -151,19 +83,19 @@ public class AttributeSelectorRule {
 		double[] vector = new double[caseList.size()];
 		String name;
 		for(String attributeName : CaseInformation.attributeNames) {
-			for(String value : possibleValuesForAttribute(attributeName)) {
-				name = getVectorFromVectorListByName(value, vectorList).getName();
-				vector = getVectorFromVectorListByName(value, vectorList).getVector();
+			for(String value : CaseInformation.possibleValuesForAttribute(attributeName)) {
+				name = VectorOperations.getVectorFromVectorListByName(value, vectorList).getName();
+				vector = VectorOperations.getVectorFromVectorListByName(value, vectorList).getVector();
 				r_plus.add(
 						new ColumnVector(
 							CaseInformation.positiveCase + name, 
-							scalarMultiplication(vector, classVectorPositive.getVector())
+							VectorOperations.scalarMultiplication(vector, classVectorPositive.getVector())
 						)
 				);
 				r_minus.add(
 						new ColumnVector(
 							CaseInformation.negativeCase + name, 
-							scalarMultiplication(vector, classVectorNegative.getVector())
+							VectorOperations.scalarMultiplication(vector, classVectorNegative.getVector())
 						)
 				);
 			}
@@ -182,11 +114,11 @@ public class AttributeSelectorRule {
 		String name;
 		for(String attributeName : CaseInformation.attributeNames) {
 			attributeEntropy = 0;
-			for(String value : possibleValuesForAttribute(attributeName)) {
-				name = getVectorFromVectorListByName(value, vectorList).getName();
-				xki_plus = getVectorFromVectorListByName(CaseInformation.positiveCase + name, r_plus).getSum() / 
+			for(String value : CaseInformation.possibleValuesForAttribute(attributeName)) {
+				name = VectorOperations.getVectorFromVectorListByName(value, vectorList).getName();
+				xki_plus = VectorOperations.getVectorFromVectorListByName(CaseInformation.positiveCase + name, r_plus).getSum() / 
 						   classVectorPositive.getSum();
-				xki_minus = getVectorFromVectorListByName(CaseInformation.negativeCase + name, r_minus).getSum() / 
+				xki_minus = VectorOperations.getVectorFromVectorListByName(CaseInformation.negativeCase + name, r_minus).getSum() / 
 						   classVectorNegative.getSum();
 				attributeEntropy += entropy(w_plus, xki_minus, w_minus, xki_plus);
 			}
@@ -197,14 +129,10 @@ public class AttributeSelectorRule {
 	public static String selectAttributeForCutting(ArrayList<Case> caseList) {
 		AttributeSelectorRule.caseList = caseList;
 		
-		if(!CaseReader.vectorFormat) {
-			caseToVector();
-		} else {
-			vectorList = CaseReader.vectorList;
-		}
+		AttributeSelectorRule.vectorList = CaseConverter.vectorList;
 		
-		ColumnVector classVectorPositive = getVectorFromVectorListByName(CaseInformation.positiveCase, vectorList);
-		ColumnVector classVectorNegative = getVectorFromVectorListByName(CaseInformation.negativeCase, vectorList);
+		ColumnVector classVectorPositive = VectorOperations.getVectorFromVectorListByName(CaseInformation.positiveCase, vectorList);
+		ColumnVector classVectorNegative = VectorOperations.getVectorFromVectorListByName(CaseInformation.negativeCase, vectorList);
 		
 		ArrayList<ColumnVector> r_plus = new ArrayList<>();
 		ArrayList<ColumnVector> r_minus = new ArrayList<>();
@@ -223,6 +151,8 @@ public class AttributeSelectorRule {
 			}
 			counter++;
 		}
+		
+		System.out.println(min);
 		
 		return CaseInformation.attributeNames.get(index);
 	}

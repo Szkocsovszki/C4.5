@@ -1,16 +1,16 @@
-package controller.treebuilder;
+package controller.builders.treebuilder;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
+import controller.builders.treebuilder.rules.FurtherDividerRule;
+import controller.informations.CaseInformation;
+import controller.informations.TreeInformation;
 import controller.model.Case;
-import controller.model.CaseInformation;
 import controller.model.DecisionTree;
 import controller.model.DecisionTree.Edge;
 import controller.model.DecisionTree.Element;
 import controller.model.DecisionTree.Node;
-import controller.model.TreeInformation;
-import controller.treebuilder.rules.FurtherDividerRule;
 import result.CreateResult;
 
 public class TreeBuilder {	
