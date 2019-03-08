@@ -5,9 +5,10 @@ import java.util.HashMap;
 
 import controller.model.Case;
 import controller.model.ColumnVector;
-import controller.model.VectorOperations;
+import service.VectorOperations;
 
 public class Discretizer {
+	// (attribútumnév, [lehetséges értékei])
 	public static HashMap<String, String[]> valuesOfTheAttribute = null;
 	private static ArrayList<Case> caseList = null;
 	

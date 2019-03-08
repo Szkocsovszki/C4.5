@@ -2,11 +2,11 @@ package controller.builders.treebuilder.rules;
 
 import java.util.ArrayList;
 
-import controller.converters.CaseConverter;
 import controller.informations.CaseInformation;
+import controller.informations.VectorInformation;
 import controller.model.Case;
 import controller.model.ColumnVector;
-import controller.model.VectorOperations;
+import service.VectorOperations;
 
 public class AttributeSelectorRule {
 	private static ArrayList<Case> caseList;
@@ -129,7 +129,7 @@ public class AttributeSelectorRule {
 	public static String selectAttributeForCutting(ArrayList<Case> caseList) {
 		AttributeSelectorRule.caseList = caseList;
 		
-		AttributeSelectorRule.vectorList = CaseConverter.vectorList;
+		AttributeSelectorRule.vectorList = VectorInformation.vectorList;
 		
 		ColumnVector classVectorPositive = VectorOperations.getVectorFromVectorListByName(CaseInformation.positiveCase, vectorList);
 		ColumnVector classVectorNegative = VectorOperations.getVectorFromVectorListByName(CaseInformation.negativeCase, vectorList);
@@ -152,7 +152,7 @@ public class AttributeSelectorRule {
 			counter++;
 		}
 		
-		System.out.println(min);
+		/*System.out.println(min);*/
 		
 		return CaseInformation.attributeNames.get(index);
 	}

@@ -14,8 +14,6 @@ public class CaseInformation {
 	public static String className;
 	public static String positiveCase = "";
 	public static String negativeCase = "";
-	public static ArrayList<Case> caseList = null;
-	public static int defaultNumberOfCases = 0;
 	
 	public static void saveAttributeNames(String[] attributeNames) {
 		CaseInformation.savedAttributeNames = new ArrayList<>();
@@ -53,20 +51,20 @@ public class CaseInformation {
 		}
 	}
 	
-	public static Set<String> possibleClasses() {
+	/*public static Set<String> possibleClasses() {
 		Set<String> set = new HashSet<>();
 		
 		set.add(positiveCase);
 		set.add(negativeCase);
 		
 		return set;
-	}
+	}*/
 	
 	public static Set<String> possibleValuesForAttribute(String attributeName) {
 		Set<String> set = new HashSet<>();
 		
-		for(int i=0; i<caseList.size(); i++) {
-			set.add(caseList.get(i).getAttributeValue(attributeName));
+		for(int i=0; i<CuttingInformation.caseList.size(); i++) {
+			set.add(CuttingInformation.caseList.get(i).getAttributeValue(attributeName));
 		}
 		
 		/*System.out.println(attributeName + ": " + set.size());

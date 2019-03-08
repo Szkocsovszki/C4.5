@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Stack;
 
@@ -11,6 +12,8 @@ import controller.builders.stackbuilder.StackBuilder;
 import controller.converters.CaseConverter;
 import controller.converters.Discretizer;
 import controller.informations.CaseInformation;
+import controller.informations.CuttingInformation;
+import controller.informations.VectorInformation;
 import controller.model.Case;
 import controller.model.ColumnVector;
 
@@ -32,7 +35,7 @@ public class CaseReader {
 			
 			if(readInVectorFormat) {
 				CaseConverter.inputIsInVectorFormat = true;
-				CaseConverter.vectorList = new ArrayList<>();
+				VectorInformation.vectorList = new ArrayList<>();
 				// if the input is given in vector format, the next row contains the possible values for attributes
 				line = source.readLine();
 				String[] possibleValues = line.split(";");
@@ -43,14 +46,17 @@ public class CaseReader {
 				for(int i=0; i<CaseInformation.numberOfAttributes + 1; i++) {
 					String[] valueNames = possibleValues[i].split(",");
 					// lementjük az attribútum-érték párokat
+					// ha attribútum lehetséges értékeiről van szó
 					if(i < CaseInformation.numberOfAttributes) {
 						Discretizer.valuesOfTheAttribute.put(CaseInformation.attributeNames.get(i), valueNames);
-					} else {
+					}
+					// ha osztályozás értékekről van szó
+					else {
 						Discretizer.valuesOfTheAttribute.put(CaseInformation.className, valueNames);
 					}
 					// attribútum lehetséges értékeivel üres vektorokat hozunk létre
 					for(int j=0; j<valueNames.length; j++) {
-						CaseConverter.vectorList.add(new ColumnVector(valueNames[j]));
+						VectorInformation.vectorList.add(new ColumnVector(valueNames[j]));
 					}
 				}
 				
@@ -64,51 +70,73 @@ public class CaseReader {
 						String[] values = actualCase[i].split(",");
 						// adott oszlopvektor feltöltése az eset megfelelő értékével
 						for(int j=0; j<values.length; j++) {
-							CaseConverter.vectorList.get(jump++).putValue(Double.parseDouble(values[j]));
+							VectorInformation.vectorList.get(jump++).putValue(Double.parseDouble(values[j]));
 						}
 					}
 				}
 				
 				CaseConverter.convertCaseToVector();
 				
+				/* 
+				 * ezt a Discretizerbe kell majd rakni, mert attribútumonként van szükség határértékre
+				 */
 				// határérték előállítása
 				double threshold = 0.5;
 				
 				// folytonos változók diszkretizálása
 				// a Discretizer fogja feltöleni a caseListet megfelelő diszkrét esetekkel
-				caseList = Discretizer.discretize(CaseConverter.vectorList, threshold);
+				caseList = Discretizer.discretize(VectorInformation.vectorList, threshold);
 				
-				for(int i=0; i<caseList.size(); i++) {
-					System.out.println(caseList.get(i));
-				}
-			} else {
-				// nem vektorformátumú beolvasás
-				CaseConverter.vectorList = new ArrayList<>();
+			}
+			
+			// nem vektorformátumú beolvasás
+			else {
+				VectorInformation.vectorList = new ArrayList<>();
+				VectorInformation.classifications = new HashSet<>();
+				int numberOfClassifications = 0;
 				// olvassuk az attribútumok lehetséges értékeit -> ez az esetekből derül ki, nem előre adott, mint vektorosnál
 				while ((line = source.readLine()) != null) {
 					String[] actualCase = line.split(";");
 					caseList.add(new Case(actualCase));
 					for(int i=0; i<actualCase.length; i++) {
+						// leellenőrizzük, hogy létezik-e már ilyen vektor
 						boolean newVector = true;
-						for(int j=0; j<CaseConverter.vectorList.size(); j++) {
-							if(CaseConverter.vectorList.get(j).getName().equals(actualCase[i])) {
+						for(int j=0; j<VectorInformation.vectorList.size(); j++) {
+							if(VectorInformation.vectorList.get(j).getName().equals(actualCase[i])) {
 								newVector = false;
 								break;
 							}
 						}
+						// ha még nem létezik ilyen nevű vektor, akkor létrehozunk egy újat
 						if(newVector) {
-							CaseConverter.vectorList.add(new ColumnVector(actualCase[i]));
+							VectorInformation.vectorList.add(new ColumnVector(actualCase[i]));
+							if(i == actualCase.length - 1) {
+								if(!VectorInformation.classifications.contains(actualCase[i])) {
+									VectorInformation.classifications.add(actualCase[i]);
+									numberOfClassifications++;
+								}
+							}
 						}
 					}
 				}
+				
+				if(numberOfClassifications > 2) {
+					CaseConverter.moreThanTwoClassification = true;
+					VectorInformation.negatedClassifications = new HashSet<>();
+					for(String classification : VectorInformation.classifications) {
+						VectorInformation.vectorList.add(new ColumnVector("¬" + classification));
+						VectorInformation.negatedClassifications.add("¬" + classification);
+					}
+				}
+				
+				CuttingInformation.caseList = caseList;
+				CaseConverter.convertCaseToVector();
+				if(numberOfClassifications > 2) {
+					VectorInformation.saveVectorList();
+				}
 			}
 			
-			/*CaseInformation.caseList = caseList;
-			System.out.println(caseList);
-			CaseConverter.convertCaseToVector();
-			System.out.println(CaseConverter.vectorList);*/
-			
-			CaseInformation.defaultNumberOfCases = caseList.size();
+			CuttingInformation.defaultNumberOfCases = caseList.size();
 			stack = StackBuilder.createStack(caseList);
 			
 			source.close();

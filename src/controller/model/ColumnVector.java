@@ -2,7 +2,7 @@ package controller.model;
 
 import java.util.ArrayList;
 
-import controller.informations.CaseInformation;
+import controller.informations.CuttingInformation;
 
 public class ColumnVector {
 	private String name = "";
@@ -31,6 +31,20 @@ public class ColumnVector {
 		this.vector = null;
 		this.values = new ArrayList<>();
 	}
+	
+	public ColumnVector(ColumnVector copy) {
+		this.name = copy.name;
+		this.vector = new double[copy.vector.length];
+		this.startVector = new double[copy.vector.length];
+		this.indexes = new int[copy.vector.length];
+		//startVector
+		for(int i=0; i<vector.length; i++) {
+			this.vector[i] = copy.vector[i];
+			this.startVector[i] = vector[i];
+			this.indexes[i] = 1;
+			sum += vector[i];
+		}
+	}
 
 	public String getName() {
 		return name;
@@ -44,12 +58,12 @@ public class ColumnVector {
 		return sum;
 	}
 	
-	/*public void deleteCases(ArrayList<Integer> indexes) {
-		for(int i=0; i<CaseInformation.defaultNumberOfCases; i++) {
+	public void deleteCases(ArrayList<Integer> indexes) {
+		for(int i=0; i<CuttingInformation.defaultNumberOfCases; i++) {
 			this.indexes[i] = 1;
 		}
 		
-		int size = CaseInformation.defaultNumberOfCases - indexes.size();
+		int size = CuttingInformation.defaultNumberOfCases - indexes.size();
 		double[] copy = new double[size];
 		
 		for(Integer index : indexes) {
@@ -67,18 +81,18 @@ public class ColumnVector {
 		for(int i=0; i<size; i++) {
 			this.vector[i] = copy[i];
 		}
-	}*/
+	}
 	
-	public void deleteCases(ArrayList<Integer> indexes) {
-		for(int i=0; i<CaseInformation.defaultNumberOfCases; i++) {
+	/*public void deleteCases(ArrayList<Integer> indexes) {
+		for(int i=0; i<CuttingInformation.defaultNumberOfCases; i++) {
 			this.indexes[i] = 1;
 		}
 		
-		int size = CaseInformation.defaultNumberOfCases - indexes.size();
+		int size = CuttingInformation.defaultNumberOfCases - indexes.size();
 		double[] copy = new double[size];
 		
 		//////////////////////////
-		System.out.println(CaseInformation.defaultNumberOfCases  + " - " + indexes.size() + " = " + size);
+		System.out.println(CuttingInformation.defaultNumberOfCases  + " - " + indexes.size() + " = " + size);
 		System.out.println(indexes);
 		for(int i=0; i<this.indexes.length; i++) {
 			System.out.print(i+1 + " ");
@@ -129,7 +143,7 @@ public class ColumnVector {
 		System.out.println();
 		System.out.println();
 		//////////////////////////////////////////
-	}
+	}*/
 	
 	public void putValue(double value) {
 		values.add(value);

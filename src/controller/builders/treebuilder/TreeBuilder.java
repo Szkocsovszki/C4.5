@@ -5,12 +5,13 @@ import java.util.Stack;
 
 import controller.builders.treebuilder.rules.FurtherDividerRule;
 import controller.informations.CaseInformation;
-import controller.informations.TreeInformation;
+import controller.informations.VectorInformation;
 import controller.model.Case;
 import controller.model.DecisionTree;
 import controller.model.DecisionTree.Edge;
-import controller.model.DecisionTree.Element;
+import controller.model.DecisionTree.Index;
 import controller.model.DecisionTree.Node;
+import controller.model.TreeElement;
 import result.CreateResult;
 
 public class TreeBuilder {	
@@ -23,14 +24,17 @@ public class TreeBuilder {
 			results.add(buildTree(caseList));
 			//attribute names must be reset, because they have been deleted from CaseInformation
 			CaseInformation.setAttributeNames();
+			if(VectorInformation.needsRestoration) {
+				VectorInformation.restoreVectorList();
+			}
 		}
 		CreateResult.createResult(results);
 	}
 
 	private DecisionTree buildTree(ArrayList<Case> caseList) {
-		Stack<TreeInformation> decisionTreeStack = FurtherDividerRule.divider(caseList);
+		Stack<TreeElement> decisionTreeStack = FurtherDividerRule.divider(caseList);
 		
-		Stack<Element> elementStack = new Stack<>();
+		Stack<Index> indexStack = new Stack<>();
 		Stack<Node> nodeStack = new Stack<>();
 		Stack<Node> preparedNodeStack = new Stack<>();
 		
@@ -38,29 +42,29 @@ public class TreeBuilder {
 		Stack<Node> nodes = new Stack<>();
 		
 		while(!decisionTreeStack.isEmpty()) {
-			TreeInformation information = new TreeInformation(decisionTreeStack.pop());
-			switch(information.getElementType()) {
-				case "element":
-					elementStack.push(new Element(information.getValue()));
+			TreeElement element = new TreeElement(decisionTreeStack.pop());
+			switch(element.getType()) {
+				case "index":
+					indexStack.push(new Index(element.getValue()));
 					break;
 				case "leaf":
-					ArrayList<Element> elements = new ArrayList<>();
-					while(!elementStack.isEmpty()) {
-						elements.add(elementStack.pop());
+					ArrayList<Index> indexes = new ArrayList<>();
+					while(!indexStack.isEmpty()) {
+						indexes.add(indexStack.pop());
 					}
-					nodeStack.push(new Node(information.getValue(), elements));
+					nodeStack.push(new Node(element.getValue(), indexes));
 					break;
 				case "edge":
 					node = new Node(nodeStack.pop());
-					node.setAncestorEdge(new Edge(information.getValue()));
+					node.setAncestorEdge(new Edge(element.getValue()));
 					preparedNodeStack.push(node);
 					break;
 				case "node":
-					node = new Node(information.getValue());
+					node = new Node(element.getValue());
 					ArrayList<Edge> edges = new ArrayList<>();
 					while(!preparedNodeStack.isEmpty()) {
 						Node preparedNode = new Node(preparedNodeStack.pop());
-						preparedNode.setAncestor(new Node(information.getValue()));
+						preparedNode.setAncestor(new Node(element.getValue()));
 						nodes.push(preparedNode);
 						edges.add(new Edge(preparedNode.getAncestorEdge()));	
 					}

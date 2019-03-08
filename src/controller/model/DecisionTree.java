@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class DecisionTree {
-	public static class Element {
+	public static class Index {
 		private String value = "";
 		
-		public Element(String value) {
+		public Index(String value) {
 			this.value = value;
 		}
 
@@ -47,24 +47,24 @@ public class DecisionTree {
 		private Node ancestor = null;
 		private Edge ancestorEdge = null;
 		private ArrayList<Edge> descendantEdges = null;
-		private ArrayList<Element> elements = null;
+		private ArrayList<Index> indexes = null;
 		
 		public Node(String name) {
 			this.name = name;
 			this.ancestor = null;
 			this.ancestorEdge = null;
 			this.descendantEdges = new ArrayList<>();
-			this.elements = new ArrayList<>();
+			this.indexes = new ArrayList<>();
 		}
 		
-		public Node(String name, ArrayList<Element> elements) {
+		public Node(String name, ArrayList<Index> indexes) {
 			this.name = name;
 			this.ancestor = null;
 			this.ancestorEdge = null;
 			this.descendantEdges = new ArrayList<>();
-			this.elements = new ArrayList<>();
-			for(int i=0; i<elements.size(); i++) {
-				this.elements.add(elements.get(i));
+			this.indexes = new ArrayList<>();
+			for(int i=0; i<indexes.size(); i++) {
+				this.indexes.add(indexes.get(i));
 			}
 		}
 		
@@ -76,9 +76,9 @@ public class DecisionTree {
 			for(int i=0; i<copy.descendantEdges.size(); i++) {
 				this.descendantEdges.add(copy.descendantEdges.get(i));
 			}
-			this.elements = new ArrayList<>();
-			for(int i=0; i<copy.elements.size(); i++) {
-				this.elements.add(copy.elements.get(i));
+			this.indexes = new ArrayList<>();
+			for(int i=0; i<copy.indexes.size(); i++) {
+				this.indexes.add(copy.indexes.get(i));
 			}
 		}
 
@@ -113,9 +113,9 @@ public class DecisionTree {
 			}
 		}
 
-		public ArrayList<Element> getElements() {
-			return elements;
-		}
+		/*public ArrayList<Index> getIndexes() {
+			return indexes;
+		}*/
 		
 		public String toString() {
 			String node = "";
@@ -130,12 +130,12 @@ public class DecisionTree {
 					node += descendantEdges.get(i) + ((i == descendantEdges.size() - 1) ? "], " : ", ");  
 				}
 			}
-			node += "elements: [";
-			if(elements.size() == 0) {
+			node += "cases: [";
+			if(indexes.size() == 0) {
 				node += "]";
 			} else {
-				for(int i=0; i<elements.size(); i++) {
-					node += elements.get(i) + ((i == elements.size() - 1) ? "]" : ", ");  
+				for(int i=0; i<indexes.size(); i++) {
+					node += indexes.get(i) + ((i == indexes.size() - 1) ? "]" : ", ");  
 				}
 			}
 			return node;
