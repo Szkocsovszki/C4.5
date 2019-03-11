@@ -1,8 +1,6 @@
 package controller.informations;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import controller.model.Case;
 
@@ -12,8 +10,8 @@ public class CaseInformation {
 	public static ArrayList<String> savedAttributeNames = null;
 	public static int numberOfAttributes = 0;
 	public static String className;
-	public static String positiveCase = "";
-	public static String negativeCase = "";
+	public static String positiveClassification = "";
+	public static String negativeClassification = "";
 	
 	public static void saveAttributeNames(String[] attributeNames) {
 		CaseInformation.savedAttributeNames = new ArrayList<>();
@@ -38,8 +36,8 @@ public class CaseInformation {
 		}
 		
 		if(values.size() == 2) {
-			positiveCase = values.get(0);
-			negativeCase = values.get(1);
+			positiveClassification = values.get(0);
+			negativeClassification = values.get(1);
 		}
 	}
 	
@@ -49,28 +47,6 @@ public class CaseInformation {
 		for(int i=0; i<savedAttributeNames.size(); i++) {
 			attributeNames.add(savedAttributeNames.get(i));
 		}
-	}
-	
-	/*public static Set<String> possibleClasses() {
-		Set<String> set = new HashSet<>();
-		
-		set.add(positiveCase);
-		set.add(negativeCase);
-		
-		return set;
-	}*/
-	
-	public static Set<String> possibleValuesForAttribute(String attributeName) {
-		Set<String> set = new HashSet<>();
-		
-		for(int i=0; i<CuttingInformation.caseList.size(); i++) {
-			set.add(CuttingInformation.caseList.get(i).getAttributeValue(attributeName));
-		}
-		
-		/*System.out.println(attributeName + ": " + set.size());
-		System.out.println(set.toString());*/
-		
-		return set;
 	}
 	
 }

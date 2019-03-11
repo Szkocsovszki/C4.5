@@ -13,12 +13,12 @@ public class ColumnVector {
 	private ArrayList<Double> values;
 	
 	public ColumnVector(String name, double[] vector) {
+		int size = vector.length;
 		this.name = name;
-		this.vector = new double[vector.length];
-		this.startVector = new double[vector.length];
-		this.indexes = new int[vector.length];
-		//startVector
-		for(int i=0; i<vector.length; i++) {
+		this.vector = new double[size];
+		this.startVector = new double[size];
+		this.indexes = new int[size];
+		for(int i=0; i<size; i++) {
 			this.vector[i] = vector[i];
 			this.startVector[i] = vector[i];
 			this.indexes[i] = 1;
@@ -33,12 +33,12 @@ public class ColumnVector {
 	}
 	
 	public ColumnVector(ColumnVector copy) {
+		int size = copy.vector.length;
 		this.name = copy.name;
-		this.vector = new double[copy.vector.length];
-		this.startVector = new double[copy.vector.length];
-		this.indexes = new int[copy.vector.length];
-		//startVector
-		for(int i=0; i<vector.length; i++) {
+		this.vector = new double[size];
+		this.startVector = new double[size];
+		this.indexes = new int[size];
+		for(int i=0; i<size; i++) {
 			this.vector[i] = copy.vector[i];
 			this.startVector[i] = vector[i];
 			this.indexes[i] = 1;
@@ -58,28 +58,49 @@ public class ColumnVector {
 		return sum;
 	}
 	
+	public ArrayList<Double> getValues() {
+		return values;
+	}
+	
+	public void putValue(double value) {
+		values.add(value);
+	}
+	
+	public void createColumnVector() {
+		int size = values.size();
+		this.indexes = new int[size];
+		this.vector = new double[size];
+		this.startVector = new double[size];
+		for(int i=0; i<size; i++) {
+			double value = values.get(i);
+			this.indexes[i] = 1;
+			this.vector[i] = value;
+			this.startVector[i] = value;
+			sum += value;
+		}
+	}
+	
 	public void deleteCases(ArrayList<Integer> indexes) {
+		// indexek alaphelyzetbe állítása
 		for(int i=0; i<CuttingInformation.defaultNumberOfCases; i++) {
 			this.indexes[i] = 1;
 		}
 		
+		// jelenlegi érvényes esetek számának megfelelően tömb létrehozása
 		int size = CuttingInformation.defaultNumberOfCases - indexes.size();
-		double[] copy = new double[size];
+		this.vector = new double[size];
 		
+		// kapott elemek törlése
 		for(Integer index : indexes) {
 			this.indexes[index - 1] = 0;
 		}		
 		
+		// megmaradt elemek lementése
 		int index = 0;
 		for(int i=0; i<this.indexes.length; i++) {
 			if(this.indexes[i] != 0) {
-				copy[index++] = this.startVector[i];
+				this.vector[index++] = this.startVector[i];
 			}
-		}
-		
-		this.vector = new double[size];
-		for(int i=0; i<size; i++) {
-			this.vector[i] = copy[i];
 		}
 	}
 	
@@ -144,22 +165,6 @@ public class ColumnVector {
 		System.out.println();
 		//////////////////////////////////////////
 	}*/
-	
-	public void putValue(double value) {
-		values.add(value);
-	}
-	
-	public void createColumnVector() {
-		this.indexes = new int[values.size()];
-		this.vector = new double[values.size()];
-		this.startVector = new double[values.size()];
-		for(int i=0; i<values.size(); i++) {
-			this.indexes[i] = 1;
-			this.vector[i] = values.get(i);
-			this.startVector[i] = values.get(i);
-			sum += values.get(i);
-		}
-	}
 	
 	public String toString() {
 		String vectorString = "(";

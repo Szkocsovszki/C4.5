@@ -19,7 +19,7 @@ import controller.model.ColumnVector;
 
 public class CaseReader {
 	
-	public static boolean readInVectorFormat = true;
+	public static boolean inputIsInVectorFormat = true;
 	
 	public static Stack<ArrayList<Case>> reading() {
 		ArrayList<Case> caseList = null;
@@ -33,8 +33,7 @@ public class CaseReader {
 			CaseInformation.saveAttributeNames(line.split(";"));
 			CaseInformation.setAttributeNames();
 			
-			if(readInVectorFormat) {
-				CaseConverter.inputIsInVectorFormat = true;
+			if(inputIsInVectorFormat) {
 				VectorInformation.vectorList = new ArrayList<>();
 				// if the input is given in vector format, the next row contains the possible values for attributes
 				line = source.readLine();
@@ -85,7 +84,7 @@ public class CaseReader {
 				
 				// folytonos változók diszkretizálása
 				// a Discretizer fogja feltöleni a caseListet megfelelő diszkrét esetekkel
-				caseList = Discretizer.discretize(VectorInformation.vectorList, threshold);
+				caseList = Discretizer.discretize(threshold);
 				
 			}
 			
@@ -121,7 +120,7 @@ public class CaseReader {
 				}
 				
 				if(numberOfClassifications > 2) {
-					CaseConverter.moreThanTwoClassification = true;
+					VectorInformation.moreThanTwoClassifications = true;
 					VectorInformation.negatedClassifications = new HashSet<>();
 					for(String classification : VectorInformation.classifications) {
 						VectorInformation.vectorList.add(new ColumnVector("¬" + classification));

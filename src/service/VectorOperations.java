@@ -2,41 +2,55 @@ package service;
 
 import java.util.ArrayList;
 
+import controller.informations.CaseInformation;
 import controller.informations.CuttingInformation;
 import controller.informations.VectorInformation;
 import controller.model.Case;
 import controller.model.ColumnVector;
 
-public class VectorOperations {
-	public static ColumnVector getVectorFromVectorListByName(String name, ArrayList<ColumnVector> list) {
-		//System.out.println(list);
-		for(ColumnVector i : list) {
-			if(i.getName().equals(name)) {
-				return i;
-			}
-		}
-		
-		return null;
-	}
-	
-	public static double[] scalarMultiplication(double[] v1, double[] v2) {
-		double[] vector = new double[CuttingInformation.caseList.size()];
-		for(int i=0; i<CuttingInformation.caseList.size(); i++) {
+public class VectorOperations {	
+	private static double[] scalarMultiplication(double[] v1, double[] v2) {
+		int size = CuttingInformation.caseList.size();
+		double[] vector = new double[size];
+		for(int i=0; i<size; i++) {
 			vector[i] = v1[i] * v2[i];
-		}
-		
+		}		
 		return vector;
 	}
 	
+	public static void scalarMultiplicationWithClassVectors(
+			ColumnVector classVectorPositive, ColumnVector classVectorNegative, 
+			ArrayList<ColumnVector> r_plus, ArrayList<ColumnVector> r_minus
+	) {
+		double[] vector = new double[CuttingInformation.caseList.size()];
+		String name;
+		for(String attributeName : CaseInformation.attributeNames) {
+			for(String value : CuttingInformation.possibleValuesForAttribute(attributeName)) {
+				name = VectorInformation.getVectorFromVectorListByName(value).getName();
+				vector = VectorInformation.getVectorFromVectorListByName(value).getVector();
+				r_plus.add(
+						new ColumnVector(
+							CaseInformation.positiveClassification + name, 
+							scalarMultiplication(vector, classVectorPositive.getVector())
+						)
+				);
+				r_minus.add(
+						new ColumnVector(
+							CaseInformation.negativeClassification + name, 
+							scalarMultiplication(vector, classVectorNegative.getVector())
+						)
+				);
+			}
+		}
+	}
+		
 	public static void deleteVectors(ArrayList<Case> caseList) {
 		ArrayList<Integer> indexes = new ArrayList<>();
 		ArrayList<Integer> toDelete = new ArrayList<>();
 		
 		// jelenlegi listából kigyűjti a benne lévő esetek indexeit
-		for(int i=0; i<CuttingInformation.defaultNumberOfCases; i++) {
-			try {
-				indexes.add(caseList.get(i).getIndex());
-			} catch (IndexOutOfBoundsException e) {}
+		for(Case actualCase : caseList) {
+			indexes.add(actualCase.getIndex());
 		}
 		
 		// összegyűjti azokat az indexeket, amelyek nem szerepeltek a listában

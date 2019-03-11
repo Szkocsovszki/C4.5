@@ -31,7 +31,7 @@ public class Case {
 		caseClass = copyCase.getCaseClass();
 	}
 
-	public HashMap<String, String> getAllAttributeValues() {
+	private HashMap<String, String> getAllAttributeValues() {
 		return allAttributeValues;
 	}
 	
@@ -47,7 +47,6 @@ public class Case {
 		if(allAttributeValues.containsKey(attribute)) {
 			return allAttributeValues.get(attribute);
 		}
-		
 		return "";
 	}
 	

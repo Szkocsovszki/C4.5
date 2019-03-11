@@ -131,11 +131,12 @@ public class DecisionTree {
 				}
 			}
 			node += "cases: [";
-			if(indexes.size() == 0) {
+			int size = indexes.size(); 
+			if(size == 0) {
 				node += "]";
 			} else {
-				for(int i=0; i<indexes.size(); i++) {
-					node += indexes.get(i) + ((i == indexes.size() - 1) ? "]" : ", ");  
+				for(int i=0; i<size; i++) {
+					node += indexes.get(i) + ((i == size - 1) ? "]" : ", ");  
 				}
 			}
 			return node;
@@ -153,9 +154,9 @@ public class DecisionTree {
 		}
 	}
 
-	public ArrayList<Node> getNodes() {
+	/*public ArrayList<Node> getNodes() {
 		return nodes;
-	}
+	}*/
 	
 	public String toString() {
 		String tree = "";

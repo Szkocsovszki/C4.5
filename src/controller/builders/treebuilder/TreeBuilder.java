@@ -22,9 +22,9 @@ public class TreeBuilder {
 			caseList = stack.pop();
 			CaseInformation.setPossibleClassValues(caseList);
 			results.add(buildTree(caseList));
-			//attribute names must be reset, because they have been deleted from CaseInformation
-			CaseInformation.setAttributeNames();
-			if(VectorInformation.needsRestoration) {
+			if(VectorInformation.moreThanTwoClassifications) {
+				// attribute names must be reset, because they have been deleted from CaseInformation
+				CaseInformation.setAttributeNames();
 				VectorInformation.restoreVectorList();
 			}
 		}

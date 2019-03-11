@@ -22,13 +22,10 @@ public class FurtherDividerRule {
 		ArrayList<Case> i = new ArrayList<>();
 		
 		while(!stack.isEmpty()) {
-			i = stack.pop();
+			CuttingInformation.caseList = stack.pop();
 			
-			/////////////////////////////
-			CuttingInformation.caseList = i;
+			i = CuttingInformation.caseList;
 			VectorOperations.deleteVectors(i);
-			/////////////////////////////
-			
 			if(FinishingRule.isFinished(i)) {
 				tree.push(new TreeElement("leaf", ClassifierRule.determineTheClassOfTheLeaf(i)));
 				for(int j=0; j<i.size(); j++) {
@@ -47,10 +44,10 @@ public class FurtherDividerRule {
 		System.out.println(VectorInformation.vectorList);
 		System.out.println("!!!");*/
 		
-		String attributeToCut = AttributeSelectorRule.selectAttributeForCutting(CuttingInformation.caseList);
+		String attributeToCut = AttributeSelectorRule.selectAttributeForCutting();
 		tree.push(new TreeElement("node", attributeToCut));
 		
-		Set<String> set = CaseInformation.possibleValuesForAttribute(attributeToCut);
+		Set<String> set = CuttingInformation.possibleValuesForAttribute(attributeToCut);
 		
 		for(String value : set) {
 			ArrayList<Case> newCaseList = new ArrayList<>();
