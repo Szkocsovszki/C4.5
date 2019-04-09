@@ -6,29 +6,29 @@ import java.util.Stack;
 import controller.model.Case;
 
 public class StackBuilder {
-	private static ArrayList<String> getPossibleClassValues(ArrayList<Case> caseList) {
-		ArrayList<String> values = new ArrayList<>();
+	private static ArrayList<String> getPossibleClassifications(ArrayList<Case> caseList) {
+		ArrayList<String> classificationList = new ArrayList<>();
 		for(int i=0; i<caseList.size(); i++) {
-			String value = caseList.get(i).getCaseClass(); 
-			if(!values.contains(value)) {
-				values.add(value);
+			String classification = caseList.get(i).getClassification(); 
+			if(!classificationList.contains(classification)) {
+				classificationList.add(classification);
 			}
 		}
-		return values;
+		return classificationList;
 	}
 	
 	public static Stack<ArrayList<Case>> createStack(ArrayList<Case> caseList) {
 		Stack<ArrayList<Case>> stack = new Stack<>();
-		ArrayList<String> possibleClassValues = getPossibleClassValues(caseList);
-		if(possibleClassValues.size() > 2) {
-			for(String value : possibleClassValues) {
+		ArrayList<String> possibleClassifications = getPossibleClassifications(caseList);
+		if(possibleClassifications.size() > 2) {
+			for(String classification : possibleClassifications) {
 				ArrayList<Case> i = new ArrayList<>();
-				for(Case actualCase : caseList) {
-					if(actualCase.getCaseClass().equals(value)) {
-						i.add(new Case(actualCase));
+				for(Case currentCase : caseList) {
+					if(currentCase.getClassification().equals(classification)) {
+						i.add(new Case(currentCase));
 					} else {
-						Case newCase = new Case(actualCase);
-						newCase.setCaseClass("¬" + value);
+						Case newCase = new Case(currentCase);
+						newCase.setClassification("¬" + classification);
 						i.add(newCase);
 					}
 				}

@@ -6,25 +6,24 @@ import java.util.HashMap;
 import controller.informations.VectorInformation;
 import controller.model.Case;
 
-public class Discretizer {
+public class ValueSelector {
 	// (attribútumnév, [lehetséges értékei])
-	public static HashMap<String, String[]> valuesOfTheAttribute = null;
+	public static HashMap<String, String[]> valuesOfTheAttributes = null;
 	private static ArrayList<Case> caseList = null;
+	private static double threshold = 0.5;
 	
-	public static ArrayList<Case> discretize(double threshold) {
+	public static ArrayList<Case> selectValueForAttributes() {
 		caseList = new ArrayList<>();
 		// ennyi eset van
 		for(int i=0; i<VectorInformation.vectorList.size() - 1; i++) {
 			// ennyi attribútuma van egy esetnek
-			String[] caseValues = new String[valuesOfTheAttribute.size()];
+			String[] caseValues = new String[valuesOfTheAttributes.size()];
 			int actualAttribute = 0;
-			
-			// diszkretizálás
 			// lehetséges attribútumok
-			for(String attribute : valuesOfTheAttribute.keySet()) {
+			for(String attribute : valuesOfTheAttributes.keySet()) {
 				int needsFurtherInvestigation = 0;
 				// attribútum lehetséges értékei
-				String[] values = valuesOfTheAttribute.get(attribute);
+				String[] values = valuesOfTheAttributes.get(attribute);
 				// értékek értékei
 				double max = VectorInformation.getVectorFromVectorListByName(values[0]).getVector()[i];
 				String maxName = values[0];

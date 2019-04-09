@@ -52,10 +52,10 @@ public class FurtherDividerRule {
 		for(String value : set) {
 			ArrayList<Case> newCaseList = new ArrayList<>();
 			tree.push(new TreeElement("edge", value));
-			for(Case actualCase : CuttingInformation.caseList) {
-				if(actualCase.getAttributeValue(attributeToCut).equals(value)) {
-					actualCase.removeAttribute(attributeToCut);
-					newCaseList.add(actualCase);
+			for(Case currentCase : CuttingInformation.caseList) {
+				if(currentCase.getAttributeValue(attributeToCut).equals(value)) {
+					currentCase.removeAttribute(attributeToCut);
+					newCaseList.add(currentCase);
 				}
 			}
 			stack.push(newCaseList);

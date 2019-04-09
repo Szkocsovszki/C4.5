@@ -25,19 +25,19 @@ public class CaseInformation {
 		className = attributeNames[attributeNames.length - 1];
 	}
 	
-	public static void setPossibleClassValues(ArrayList<Case> caseList) {
-		ArrayList<String> values = new ArrayList<>();
+	public static void setPossibleClassifications(ArrayList<Case> caseList) {
+		ArrayList<String> classificationList = new ArrayList<>();
 		
 		for(int i=0; i<caseList.size(); i++) {
-			String value = caseList.get(i).getCaseClass(); 
-			if(!values.contains(value)) {
-				values.add(value);
+			String classification = caseList.get(i).getClassification(); 
+			if(!classificationList.contains(classification)) {
+				classificationList.add(classification);
 			}
 		}
 		
-		if(values.size() == 2) {
-			positiveClassification = values.get(0);
-			negativeClassification = values.get(1);
+		if(classificationList.size() == 2) {
+			positiveClassification = classificationList.get(0);
+			negativeClassification = classificationList.get(1);
 		}
 	}
 	

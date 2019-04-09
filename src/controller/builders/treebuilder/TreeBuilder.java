@@ -20,7 +20,7 @@ public class TreeBuilder {
 		ArrayList<DecisionTree> results = new ArrayList<>();
 		while(!stack.isEmpty()) {
 			caseList = stack.pop();
-			CaseInformation.setPossibleClassValues(caseList);
+			CaseInformation.setPossibleClassifications(caseList);
 			results.add(buildTree(caseList));
 			if(VectorInformation.moreThanTwoClassifications) {
 				// attribute names must be reset, because they have been deleted from CaseInformation
@@ -70,7 +70,7 @@ public class TreeBuilder {
 					}
 					node.setDescendantEdges(edges);
 					nodeStack.push(node);
-					//roots ancestor is indeed null
+					// roots ancestor is indeed null
 					if(decisionTreeStack.isEmpty()) {
 						nodes.push(node);
 					}

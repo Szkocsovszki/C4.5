@@ -6,11 +6,11 @@ import controller.model.Case;
 
 public class FinishingRule {
 	public static boolean isFinished(ArrayList<Case> caseList) {
-		String classValueOfTheFirstCase = caseList.get(0).getCaseClass();
-		String classValueOfTheActualCase;
+		String classificationOfTheFirstCase = caseList.get(0).getClassification();
+		String classificationOfTheCurrentCase;
 		for(int i=1; i<caseList.size(); i++) {
-			classValueOfTheActualCase = caseList.get(i).getCaseClass();
-			if(!classValueOfTheActualCase.equals(classValueOfTheFirstCase)) {
+			classificationOfTheCurrentCase = caseList.get(i).getClassification();
+			if(!classificationOfTheCurrentCase.equals(classificationOfTheFirstCase)) {
 				return false;
 			}
 		}	

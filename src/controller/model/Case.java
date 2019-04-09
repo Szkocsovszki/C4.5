@@ -7,60 +7,60 @@ import controller.informations.CaseInformation;
 
 public class Case {
 	private int index;
-	private HashMap<String, String> allAttributeValues;
-	private String caseClass = null;
+	private HashMap<String, String> valuesOfTheAttributes;
+	private String classification = null;
 	
 	public Case(String[] attributeValues) {
-		this.allAttributeValues = new LinkedHashMap<>();
+		this.valuesOfTheAttributes = new LinkedHashMap<>();
 		
 		index = ++CaseInformation.index;
 		
 		for(int i=0; i<CaseInformation.numberOfAttributes; i++) {	
-			this.allAttributeValues.put(CaseInformation.attributeNames.get(i), attributeValues[i]);
+			this.valuesOfTheAttributes.put(CaseInformation.attributeNames.get(i), attributeValues[i]);
 		}
 		
-		caseClass = attributeValues[attributeValues.length - 1];
+		classification = attributeValues[attributeValues.length - 1];
 	}
 	
 	public Case(Case copyCase) {
 		index = copyCase.getIndex();
-		allAttributeValues = new HashMap<>();
-		for(String key : copyCase.getAllAttributeValues().keySet()) {
-			allAttributeValues.put(key, copyCase.getAttributeValue(key));
+		valuesOfTheAttributes = new HashMap<>();
+		for(String attributeName : copyCase.getValuesOfTheAttributes().keySet()) {
+			valuesOfTheAttributes.put(attributeName, copyCase.getAttributeValue(attributeName));
 		}
-		caseClass = copyCase.getCaseClass();
+		classification = copyCase.getClassification();
 	}
 
-	private HashMap<String, String> getAllAttributeValues() {
-		return allAttributeValues;
+	private HashMap<String, String> getValuesOfTheAttributes() {
+		return valuesOfTheAttributes;
 	}
 	
 	public int getIndex() {
 		return index;
 	}
 	
-	public String getCaseClass() {
-		return caseClass;
+	public String getClassification() {
+		return classification;
 	}
 
 	public String getAttributeValue(String attribute) {
-		if(allAttributeValues.containsKey(attribute)) {
-			return allAttributeValues.get(attribute);
+		if(valuesOfTheAttributes.containsKey(attribute)) {
+			return valuesOfTheAttributes.get(attribute);
 		}
 		return "";
 	}
 	
 	public void removeAttribute(String attribute) {
-		if(allAttributeValues.containsKey(attribute)) {
-			allAttributeValues.remove(attribute);
+		if(valuesOfTheAttributes.containsKey(attribute)) {
+			valuesOfTheAttributes.remove(attribute);
 		}
 	}
 	
-	public void setCaseClass(String caseClass) {
-		this.caseClass = caseClass;
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 
 	public String toString() {
-		return allAttributeValues.toString() + CaseInformation.className + ": " + caseClass + "\n";
+		return valuesOfTheAttributes.toString() + CaseInformation.className + ": " + classification + "\n";
 	}
 }

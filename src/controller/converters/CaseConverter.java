@@ -15,11 +15,11 @@ public class CaseConverter {
 	private static void caseExamination(Set<String> possibleValues, String attributeName) {
 		for(String name : possibleValues) {
 			ColumnVector vector = new ColumnVector(name);
-			for(Case actualCase : CuttingInformation.caseList) {
+			for(Case currentCase : CuttingInformation.caseList) {
 				if(attributeName.isEmpty()) {
-					vector.putValue(actualCase.getCaseClass().equals(name) ? 1.0 : 0.0);
+					vector.putValue(currentCase.getClassification().equals(name) ? 1.0 : 0.0);
 				} else {
-					vector.putValue(actualCase.getAttributeValue(attributeName).equals(name) ? 1.0 : 0.0);
+					vector.putValue(currentCase.getAttributeValue(attributeName).equals(name) ? 1.0 : 0.0);
 				}
 			}
 			VectorInformation.vectorList.add(vector);
@@ -37,7 +37,7 @@ public class CaseConverter {
 		}
 	}
 	
-	private static void caseToVector() {
+	private static void convert() {
 		// névhez hozzá kéne adni az attribútum nevét is, mert lehet, hogy más attribútumnak is van ilyen lehetséges értéke
 		VectorInformation.vectorList = new ArrayList<>();
 		
@@ -53,9 +53,9 @@ public class CaseConverter {
 	}
 	
 
-	public static void convertCaseToVector() {
+	public static void convertCasesToVectors() {
 		if(!CaseReader.inputIsInVectorFormat) {
-			caseToVector();
+			convert();
 		}
 		for(ColumnVector vector : VectorInformation.vectorList) {
 			vector.createColumnVector();

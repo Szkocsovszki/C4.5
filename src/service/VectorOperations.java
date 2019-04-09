@@ -49,8 +49,8 @@ public class VectorOperations {
 		ArrayList<Integer> toDelete = new ArrayList<>();
 		
 		// jelenlegi listából kigyűjti a benne lévő esetek indexeit
-		for(Case actualCase : caseList) {
-			indexes.add(actualCase.getIndex());
+		for(Case currentCase : caseList) {
+			indexes.add(currentCase.getIndex());
 		}
 		
 		// összegyűjti azokat az indexeket, amelyek nem szerepeltek a listában
