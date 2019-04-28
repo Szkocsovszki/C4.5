@@ -19,7 +19,7 @@ import controller.model.Case;
 import controller.model.ColumnVector;
 
 public class CaseReader {
-	public static boolean inputIsInVectorFormat = false;
+	public static boolean inputIsInVectorFormat = true;
 	
 	private static ArrayList<Case> readInVectorFormat(BufferedReader source) throws IOException {
 		VectorInformation.vectorList = new ArrayList<>();
@@ -122,8 +122,8 @@ public class CaseReader {
 		Stack<ArrayList<Case>> stack = null;
 		ArrayList<Case> caseList = null;
 		try {
-			BufferedReader source = new BufferedReader(new FileReader(new File("src\\reader\\source.txt")));
-			//BufferedReader source = new BufferedReader(new FileReader(new File("src\\reader\\sourceVectorFormat.txt")));
+			//BufferedReader source = new BufferedReader(new FileReader(new File("src\\reader\\input\\source.txt")));
+			BufferedReader source = new BufferedReader(new FileReader(new File("src\\reader\\input\\sourceVectorFormat.txt")));
 			// first row contains the name of the attributes
 			String line = source.readLine();
 			CaseInformation.saveAttributeNames(line.split(";"));

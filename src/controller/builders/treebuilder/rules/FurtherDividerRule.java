@@ -8,7 +8,7 @@ import controller.informations.CaseInformation;
 import controller.informations.CuttingInformation;
 import controller.model.Case;
 import controller.model.TreeElement;
-import service.VectorOperations;
+import controller.service.VectorOperations;
 
 public class FurtherDividerRule {
 	public static Stack<TreeElement> tree;
