@@ -6,7 +6,7 @@ import controller.informations.CaseInformation;
 import controller.informations.CuttingInformation;
 import controller.informations.VectorInformation;
 import controller.model.ColumnVector;
-import controller.service.VectorOperations;
+import controller.operations.VectorOperations;
 
 public class AttributeSelectorRule {
 	

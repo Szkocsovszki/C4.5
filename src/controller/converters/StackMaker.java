@@ -1,11 +1,11 @@
-package controller.builders.stackbuilder;
+package controller.converters;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
 import controller.model.Case;
 
-public class StackBuilder {
+public class StackMaker {
 	private static ArrayList<String> getPossibleClassifications(ArrayList<Case> caseList) {
 		ArrayList<String> classificationList = new ArrayList<>();
 		for(int i=0; i<caseList.size(); i++) {

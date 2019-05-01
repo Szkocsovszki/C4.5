@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Stack;
 
-import controller.builders.stackbuilder.StackBuilder;
 import controller.converters.CaseConverter;
+import controller.converters.StackMaker;
 import controller.converters.ValueSelector;
 import controller.informations.CaseInformation;
 import controller.informations.CuttingInformation;
@@ -61,6 +61,8 @@ public class CaseReader {
 				}
 			}
 		}
+		
+		//////////////// negált vektorok		
 		
 		CaseConverter.convertCasesToVectors();
 		
@@ -132,7 +134,7 @@ public class CaseReader {
 			caseList = inputIsInVectorFormat ? readInVectorFormat(source) : readInNonVectorFormat(source);
 			
 			CuttingInformation.defaultNumberOfCases = caseList.size();
-			stack = StackBuilder.createStack(caseList);
+			stack = StackMaker.createStack(caseList);
 			
 			source.close();
 		} catch (Exception e) {
