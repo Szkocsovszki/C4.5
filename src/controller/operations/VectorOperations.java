@@ -44,7 +44,7 @@ public class VectorOperations {
 		}
 	}
 		
-	public static void deleteVectors(ArrayList<Case> caseList) {
+	public static void keepIndexes(ArrayList<Case> caseList) {
 		ArrayList<Integer> indexes = new ArrayList<>();
 		ArrayList<Integer> toDelete = new ArrayList<>();
 		

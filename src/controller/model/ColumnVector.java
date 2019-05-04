@@ -9,7 +9,7 @@ public class ColumnVector {
 	private double[] vector;
 	private double[] startVector;
 	private double sum = 0.0;
-	private int[] indexes;
+	private boolean[] indexes;
 	private ArrayList<Double> values;
 	
 	public ColumnVector(String name, double[] vector) {
@@ -17,11 +17,11 @@ public class ColumnVector {
 		this.name = name;
 		this.vector = new double[size];
 		this.startVector = new double[size];
-		this.indexes = new int[size];
+		this.indexes = new boolean[size];
 		for(int i=0; i<size; i++) {
 			this.vector[i] = vector[i];
 			this.startVector[i] = vector[i];
-			this.indexes[i] = 1;
+			this.indexes[i] = true;
 			sum += vector[i];
 		}
 	}
@@ -37,11 +37,11 @@ public class ColumnVector {
 		this.name = copy.name;
 		this.vector = new double[size];
 		this.startVector = new double[size];
-		this.indexes = new int[size];
+		this.indexes = new boolean[size];
 		for(int i=0; i<size; i++) {
 			this.vector[i] = copy.vector[i];
 			this.startVector[i] = vector[i];
-			this.indexes[i] = 1;
+			this.indexes[i] = true;
 			sum += vector[i];
 		}
 	}
@@ -68,12 +68,12 @@ public class ColumnVector {
 	
 	public void createColumnVector() {
 		int size = values.size();
-		this.indexes = new int[size];
+		this.indexes = new boolean[size];
 		this.vector = new double[size];
 		this.startVector = new double[size];
 		for(int i=0; i<size; i++) {
 			double value = values.get(i);
-			this.indexes[i] = 1;
+			this.indexes[i] = true;
 			this.vector[i] = value;
 			this.startVector[i] = value;
 			sum += value;
@@ -83,7 +83,7 @@ public class ColumnVector {
 	public void deleteCases(ArrayList<Integer> indexes) {
 		// indexek alaphelyzetbe állítása
 		for(int i=0; i<CuttingInformation.defaultNumberOfCases; i++) {
-			this.indexes[i] = 1;
+			this.indexes[i] = true;
 		}
 		
 		// jelenlegi érvényes esetek számának megfelelően tömb létrehozása
@@ -92,13 +92,13 @@ public class ColumnVector {
 		
 		// kapott elemek törlése
 		for(Integer index : indexes) {
-			this.indexes[index - 1] = 0;
-		}		
+			this.indexes[index - 1] = false;
+		}
 		
 		// megmaradt elemek lementése
 		int index = 0;
 		for(int i=0; i<this.indexes.length; i++) {
-			if(this.indexes[i] != 0) {
+			if(this.indexes[i]) {
 				this.vector[index++] = this.startVector[i];
 			}
 		}

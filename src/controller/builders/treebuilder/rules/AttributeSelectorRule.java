@@ -62,8 +62,6 @@ public class AttributeSelectorRule {
 			counter++;
 		}
 		
-		/*System.out.println(min);*/
-		
 		return CaseInformation.attributeNames.get(index);
 	}
 }

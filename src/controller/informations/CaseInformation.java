@@ -49,4 +49,8 @@ public class CaseInformation {
 		}
 	}
 	
+	public static void deleteAttribute(String attribute) {
+		attributeNames.remove(attribute);
+	}
+	
 }
